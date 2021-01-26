@@ -32,6 +32,7 @@ namespace App_ControleDeFuncionarios.Controllers
             {
                 return HttpNotFound();
             }
+            
             return View(funcionario);
         }
 
