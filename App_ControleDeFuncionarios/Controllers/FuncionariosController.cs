@@ -11,22 +11,23 @@ using App_ControleDeFuncionarios.Models;
 
 namespace App_ControleDeFuncionarios.Controllers
 {
+
     public class FuncionariosController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
+        [HttpGet]
+        [Route("listar-funcionarios")]
         public async Task<ActionResult> Index()
         {
             return View(await db.Funcionarios.ToListAsync());
         }
 
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Funcionario funcionario = await db.Funcionarios.FindAsync(id);
+        [HttpGet]
+        [Route("funcionario-detalhe/{id:int}")]
+        public async Task<ActionResult> Details(int id)
+        {            
+            var funcionario = await db.Funcionarios.FindAsync(id);
             if (funcionario == null)
             {
                 return HttpNotFound();
@@ -34,12 +35,15 @@ namespace App_ControleDeFuncionarios.Controllers
             return View(funcionario);
         }
 
+        [HttpGet]
+        [Route("novo-funcionario")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("novo-funcionario")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Matricula,Nome,Sobrenome,Email,Ativo,DataAdmissao,DataDemissao")] Funcionario funcionario)
         {
@@ -53,13 +57,11 @@ namespace App_ControleDeFuncionarios.Controllers
             return View(funcionario);
         }
 
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Funcionario funcionario = await db.Funcionarios.FindAsync(id);
+        [HttpGet]
+        [Route("editar-funcionario/{id:int}")]
+        public async Task<ActionResult> Edit(int id)
+        {          
+            var funcionario = await db.Funcionarios.FindAsync(id);
             if (funcionario == null)
             {
                 return HttpNotFound();
@@ -68,6 +70,7 @@ namespace App_ControleDeFuncionarios.Controllers
         }
 
         [HttpPost]
+        [Route("editar-funcionario/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Matricula,Nome,Sobrenome,Email,Ativo,DataAdmissao,DataDemissao")] Funcionario funcionario)
         {
@@ -80,13 +83,11 @@ namespace App_ControleDeFuncionarios.Controllers
             return View(funcionario);
         }
 
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Funcionario funcionario = await db.Funcionarios.FindAsync(id);
+        [HttpGet]
+        [Route("excluir-funcionario/{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {           
+            var funcionario = await db.Funcionarios.FindAsync(id);
             if (funcionario == null)
             {
                 return HttpNotFound();
@@ -94,11 +95,12 @@ namespace App_ControleDeFuncionarios.Controllers
             return View(funcionario);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [Route("excluir-funcionario/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Funcionario funcionario = await db.Funcionarios.FindAsync(id);
+            var funcionario = await db.Funcionarios.FindAsync(id);
             db.Funcionarios.Remove(funcionario);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
