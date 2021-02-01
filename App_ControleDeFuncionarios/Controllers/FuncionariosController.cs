@@ -11,13 +11,14 @@ using App_ControleDeFuncionarios.Models;
 
 namespace App_ControleDeFuncionarios.Controllers
 {
-
+    [Authorize]
     public class FuncionariosController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
-
+        
         [HttpGet]
         [Route("listar-funcionarios")]
+        [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
             return View(await db.Funcionarios.ToListAsync());
