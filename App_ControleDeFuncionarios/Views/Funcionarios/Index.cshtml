@@ -1,15 +1,16 @@
 ﻿@model IEnumerable<App_ControleDeFuncionarios.Models.Funcionario>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Listagem";
 }
 
-<h2>Index</h2>
+<h2>Listagem</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div>
+    <a href="@Url.Action("Create")" class="btn btn-primary">Cadastrar</a><br /><br />
+</div>
+
+<table class="table table-striped table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Matricula)
@@ -26,13 +27,8 @@
         <th>
             @Html.DisplayNameFor(model => model.Ativo)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataAdmissao)
+        <th>            
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataDemissao)
-        </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -53,15 +49,9 @@
             @Html.DisplayFor(modelItem => item.Ativo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DataAdmissao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataDemissao)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a href="@Url.Action("Edit", "Funcionarios", new { id = item.Id })" class="btn btn-warning">Editar</a>
+            <a href="@Url.Action("Details", "Funcionarios", new { id = item.Id })" class="btn btn-info">Detalhes</a>
+            <a href="@Url.Action("Delete", "Funcionarios", new { id = item.Id })" class="btn btn-danger">Deletar</a>            
         </td>
     </tr>
 }
